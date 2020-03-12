@@ -33,7 +33,7 @@ The following queries answer question #4 on the given task:
 
 * Users with the most posts:
 ```
-select author, count(id) as posts from posts group by author;
+select name, count(name) as number_of_posts from posts inner join authors on posts.author_id = authors.id group by name order by number_of_posts desc
 ```
 * Number of all posts in the whole forum:
 ```
@@ -41,13 +41,13 @@ select count(*) as posts from posts;
 ```
 * Forums with the most active users:
 ```
-select forum, count(author) as active_users from (select author, t.forum from posts as p inner join threads as t on p.thread_id = t.id group by author, t.forum) as sub group by forum order by active_users desc;
+select forum_name, count(name) as active_users from (select forum_name, name from forums inner join threads on forums.id = threads.forum_id inner join posts on threads.id = posts.thread_id inner join authors on authors.id = posts.author_id group by forum_name, name) as subq group by forum_name order by active_users desc;
 ```
 * Threads with the most active users:
 ```
-select t.thread, count(author) as unique_authors from posts as p inner join threads as t on p.thread_id = t.id group by thread_id order by unique_authors desc;
+select thread, count(name) as active_users from (select thread, name from forums inner join threads on forums.id = threads.forum_id inner join posts on threads.id = posts.thread_id inner join authors on authors.id = posts.author_id group by thread, name) as subq group by thread order by active_users desc;
 ```
 * Forums with no posts:
 ```
-select f.forum, coalesce(t.foo, 0) from forums as f left join (select forum, count(forum) as foo from threads group by forum) as t on f.forum = t.forum;
+ select forum_name from (select forum_name, posts.id from forums left join threads on forums.id = threads.forum_id left join posts on threads.id = posts.thread_id) as subq where id is NULL;
 ```
