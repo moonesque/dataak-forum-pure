@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><!-- start: index -->
+<html xml:lang="persian" lang="persian" dir="rtl" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>تالار گفتمان دیتاک</title>
+<!-- start: headerinclude -->
+<link rel="alternate" type="application/rss+xml" title="آخرین موضوع‌ها (RSS 2.0)" href="http://forum.dataak.com/syndication.php" />
+<link rel="alternate" type="application/atom+xml" title="آخرین موضوع‌ها (Atom 1.0)" href="http://forum.dataak.com/syndication.php?type=atom1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<script type="text/javascript" src="http://forum.dataak.com/jscripts/jquery.js?ver=1821"></script>
+<script type="text/javascript" src="http://forum.dataak.com/jscripts/jquery.plugins.min.js?ver=1821"></script>
+<script type="text/javascript" src="http://forum.dataak.com/jscripts/general.js?ver=1821"></script>
+
+<link type="text/css" rel="stylesheet" href="http://forum.dataak.com/cache/themes/theme1/global.css" />
+<link type="text/css" rel="stylesheet" href="http://forum.dataak.com/cache/themes/theme1/css3.css" />
+
+<script type="text/javascript">
+<!--
+	lang.unknown_error = "یک خطای ناشناخته به‌وجود آمد.";
+
+	lang.select2_match = "یک نتیجه یافت شد. جهت انتخاب آن، لطفاً کلید Enter را فشار دهید.";
+	lang.select2_matches = "{1} نتیجه یافت شد. با استفاده از کلیدهای جهت بالا و پایین، هر یک را که می‌خواهید انتخاب کنید.";
+	lang.select2_nomatches = "هیچ نتیجه‌ای یافت نشد";
+	lang.select2_inputtooshort_single = "لطفاً حداقل یک حرف دیگر را وارد نمایید";
+	lang.select2_inputtooshort_plural = "لطفاً حداقل {1} حرف دیگر را وارد نمایید";
+	lang.select2_inputtoolong_single = "لطفاً یک حرف را حذف نمایید";
+	lang.select2_inputtoolong_plural = "لطفاً {1} حرف را حذف نمایید";
+	lang.select2_selectiontoobig_single = "شما تنها می‌توانید یک مورد را انتخاب نمایید";
+	lang.select2_selectiontoobig_plural = "شما تنها می‌توانید {1} مورد را انتخاب نمایید";
+	lang.select2_loadmore = "در حال بارگذاری نتایج بیش‌تر&hellip;";
+	lang.select2_searching = "در حال جستجو&hellip;";
+
+	var templates = {
+		modal: '<div class=\"modal\">\
+	<div style=\"overflow-y: auto; max-height: 400px;\">\
+		<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" class=\"tborder\">\
+			<tr>\
+				<td class=\"thead\" colspan=\"2\"><strong>__message__</strong></td>\
+			</tr>\
+			<tr>\
+				<td colspan=\"2\" class=\"trow1\">\
+				<div style=\"text-align: center\" class=\"modal_buttons\">__buttons__</div></td>\
+			</tr>\
+		</table>\
+	</div>\
+</div>',
+		modal_button: '<input type=\"submit\" class=\"button\" value=\"__title__\"/>&nbsp;'
+	};
+
+	var cookieDomain = ".forum.dataak.com";
+	var cookiePath = "/";
+	var cookiePrefix = "";
+	var cookieSecureFlag = "0";
+	var deleteevent_confirm = "آیا مطمئن هستید که می‌خواهید این رویداد را حذف کنید؟";
+	var removeattach_confirm = "آیا مطمئن هستید که می‌خواهید پیوست‌های انتخاب شده را از این ارسال حذف کنید؟";
+	var loading_text = 'در حال بارگذاری <br />لطفاً صبر کنید&hellip;';
+	var saving_changes = 'در حال ذخیره‌ی تغییرات&hellip;';
+	var use_xmlhttprequest = "1";
+	var my_post_key = "873fafa9a643823e860e8821b4c9c9b0";
+	var rootpath = "http://forum.dataak.com";
+	var imagepath = "http://forum.dataak.com/images";
+  	var yes_confirm = "بله";
+	var no_confirm = "خیر";
+	var MyBBEditor = null;
+	var spinner_image = "http://forum.dataak.com/images/spinner.gif";
+	var spinner = "<img src='" + spinner_image +"' alt='' />";
+	var modal_zindex = 9999;
+// -->
+</script>
+<!-- end: headerinclude -->
+<script type="text/javascript">
+<!--
+	lang.no_new_posts = "انجمن دارای ارسال‌(های) جدید نمی‌باشد";
+	lang.click_mark_read = "برای علامت گذاشتن این انجمن به عنوان خوانده شده کلیک کنید.";
+// -->
+</script>
+</head>
+<body>
+<!-- start: header -->
+<div id="container">
+		<a name="top" id="top"></a>
+		<div id="header">
+			<div id="logo">
+				<div class="wrapper">
+					<a href="http://forum.dataak.com/index.php"><img src="http://forum.dataak.com/images/logo.png" alt="تالار گفتمان دیتاک" title="تالار گفتمان دیتاک" /></a>
+					<ul class="menu top_links">
+												<!-- start: header_menu_portal -->
+<li><a href="http://forum.dataak.com/portal.php" class="portal">سردر</a></li>
+<!-- end: header_menu_portal -->
+
+						<!-- start: header_menu_search -->
+<li><a href="http://forum.dataak.com/search.php" class="search">جستجو</a></li>
+<!-- end: header_menu_search -->
+						<!-- start: header_menu_memberlist -->
+<li><a href="http://forum.dataak.com/memberlist.php" class="memberlist">فهرست اعضا</a></li>
+<!-- end: header_menu_memberlist -->
+						<!-- start: header_menu_calendar -->
+<li><a href="http://forum.dataak.com/calendar.php" class="calendar">سالنامه</a></li>
+<!-- end: header_menu_calendar -->
+						<li><a href="http://forum.dataak.com/misc.php?action=help" class="help">راهنما</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="panel">
+				<div class="upper">
+					<div class="wrapper">
+						<!-- start: header_quicksearch -->
+						<form action="http://forum.dataak.com/search.php">
+						<fieldset id="search">
+							<input name="keywords" type="text" class="textbox" />
+							<input value="جستجو" type="submit" class="button" />
+							<input type="hidden" name="action" value="do_search" />
+							<input type="hidden" name="postthread" value="1" />
+						</fieldset>
+						</form>
+<!-- end: header_quicksearch -->
+												<!-- start: header_welcomeblock_guest -->
+						<!-- Continuation of div(class="upper") as opened in the header template -->
+						<span class="welcome">درود مهمان گرامی! <a href="http://forum.dataak.com/member.php?action=login" onclick="$('#quick_login').modal({ fadeDuration: 250, keepelement: true, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }); return false;" class="login">ورود</a> <a href="http://forum.dataak.com/member.php?action=register" class="register">ثبت نام</a></span>
+					</div>
+				</div>
+				<div class="modal" id="quick_login" style="display: none;">
+					<form method="post" action="http://forum.dataak.com/member.php">
+						<input name="action" type="hidden" value="do_login" />
+						<input name="url" type="hidden" value="" />
+						<input name="quick_login" type="hidden" value="1" />
+						<input name="my_post_key" type="hidden" value="873fafa9a643823e860e8821b4c9c9b0" />
+						<table width="100%" cellspacing="0" cellpadding="5" border="0" class="tborder">
+							<tr>
+								<td class="thead" colspan="2"><strong>ورود</strong></td>
+							</tr>
+							<!-- start: header_welcomeblock_guest_login_modal -->
+<tr>
+	<td class="trow1" width="25%"><strong>نام کاربری:</strong></td>
+	<td class="trow1"><input name="quick_username" id="quick_login_username" type="text" value="" class="textbox initial_focus" /></td>
+</tr>
+<tr>
+	<td class="trow2"><strong>گذرواژه‌: </strong></td>
+	<td class="trow2">
+		<input name="quick_password" id="quick_login_password" type="password" value="" class="textbox" /> <a href="http://forum.dataak.com/member.php?action=lostpw" class="lost_password">گذرواژه‌تان را فراموش کرده‌اید؟</a>
+	</td>
+</tr>
+<tr>
+	<td class="trow1">&nbsp;</td>
+	<td class="trow1 remember_me">
+		<input name="quick_remember" id="quick_login_remember" type="checkbox" value="yes" class="checkbox" checked="checked" />
+		<label for="quick_login_remember">مرا به خاطر بسپار</label>
+	</td>
+</tr>
+<tr>
+	<td class="trow2" colspan="2">
+		<div align="center"><input name="submit" type="submit" class="button" value="ورود" /></div>
+	</td>
+</tr>
+<!-- end: header_welcomeblock_guest_login_modal -->
+						</table>
+					</form>
+				</div>
+				<script type="text/javascript">
+					$("#quick_login input[name='url']").val($(location).attr('href'));
+				</script>
+<!-- end: header_welcomeblock_guest -->
+
+					<!-- </div> in header_welcomeblock_member and header_welcomeblock_guest -->
+				<!-- </div> in header_welcomeblock_member and header_welcomeblock_guest -->
+			</div>
+		</div>
+		<div id="content">
+			<div class="wrapper">
+
+				
+				
+				
+				
+				
+				
+				
+				<!-- start: nav -->
+
+<div class="navigation">
+<!-- start: nav_bit_active -->
+<span class="active">تالار گفتمان دیتاک</span>
+<!-- end: nav_bit_active -->
+</div>
+<!-- end: nav -->
+				<br />
+<!-- end: header -->
+
+<!-- start: index_boardstats -->
+<table border="0" cellspacing="0" cellpadding="5" class="tborder">
+<thead>
+<tr>
+<td class="thead">
+<div class="expcolimage"><img src="http://forum.dataak.com/images/collapse.png" id="boardstats_img" class="expander" alt="[-]" title="[-]" /></div>
+<div><strong>آمار انجمن</strong></div>
+</td>
+</tr>
+</thead>
+<tbody style="" id="boardstats_e">
+<!-- start: index_whosonline -->
+<tr>
+<td class="tcat"><span class="smalltext"><strong>افراد آنلاین</strong> [<a href="online.php">فهرست کامل</a>]</span></td>
+</tr>
+<tr>
+<td class="trow1"><span class="smalltext">2 کاربر  فعال در 15 دقیقه‌ی گذشته (1 عضو، 0   نفر از آن‌ها پنهان، و 1 مهمان).<br /><a href="http://forum.dataak.com/member.php?action=profile&amp;uid=7">mahan</a></span></td>
+</tr>
+<!-- end: index_whosonline -->
+
+<!-- start: index_stats -->
+<tr><td class="tcat"><span class="smalltext"><strong>آمار انجمن</strong></span></td></tr>
+<tr>
+<td class="trow1"><span class="smalltext">
+کاربران انجمن 53 پست را در 14 موضوع ارسال کرده‌اند.<br />
+انجمن دارای 10 عضو می‌باشد.<br />
+به جدیدترین عضو انجمن، <b><a href="http://forum.dataak.com/member.php?action=profile&amp;uid=10">test10</a></b>، خوش‌آمد می‌گوییم.<br />
+بیش‌ترین تعداد کاربرانی که به طور همزمان در انجمن حضور داشته‌اند:   6 کاربر در تاریخ 2020/03/01 و ساعت 10:39 PM بوده است.
+</span>
+</td>
+</tr>
+<!-- end: index_stats -->
+<tr>
+	<td class="tfoot" style="text-align: left">
+		<span class="smalltext">
+			
+			<!-- start: index_statspage -->
+<a href="stats.php">آمار انجمن</a>
+<!-- end: index_statspage -->
+		</span>
+	</td>
+</tr>
+</tbody>
+</table>
+<br />
+<!-- end: index_boardstats -->
+
+<dl class="forum_legend smalltext">
+	<dt><span class="forum_status forum_on" title="انجمن دارای ارسال‌(های) جدید می‌باشد"></span></dt>
+	<dd>انجمن دارای ارسال‌(های) جدید می‌باشد</dd>
+
+	<dt><span class="forum_status forum_off" title="انجمن دارای ارسال‌(های) جدید نمی‌باشد"></span></dt>
+	<dd>انجمن دارای ارسال‌(های) جدید نمی‌باشد</dd>
+
+	<dt><span class="forum_status forum_offclose" title="انجمن بسته شده است"></span></dt>
+	<dd>انجمن بسته شده است</dd>
+
+	<dt><span class="forum_status forum_offlink" title="مسیر انجمن تغییر یافته است"></span></dt>
+	<dd>مسیر انجمن تغییر یافته است</dd>
+</dl>
+<br class="clear" />
+<!-- start: footer -->
+
+	</div>
+</div>
+<div id="footer">
+	<div class="upper">
+		<div class="wrapper">
+			<!-- start: footer_languageselect -->
+<div class="language">
+<form method="POST" action="/index.php" id="lang_select">
+	
+	<input type="hidden" name="my_post_key" value="873fafa9a643823e860e8821b4c9c9b0" />
+	<select name="language" onchange="MyBB.changeLanguage();">
+		<optgroup label="انتخاب سریع زبان">
+			<!-- start: footer_languageselect_option -->
+<option value="english">&nbsp;&nbsp;&nbsp;English (American)</option>
+<!-- end: footer_languageselect_option --><!-- start: footer_languageselect_option -->
+<option value="persian" selected="selected">&nbsp;&nbsp;&nbsp;پارسی - Persian</option>
+<!-- end: footer_languageselect_option -->
+		</optgroup>
+	</select>
+	<!-- start: gobutton -->
+<input type="submit" class="button" value="برو" />
+<!-- end: gobutton -->
+</form>
+</div>
+<!-- end: footer_languageselect -->
+			
+			<ul class="menu bottom_links">
+				<!-- start: footer_showteamlink -->
+<li><a href="showteam.php">تیم انجمن</a></li>
+<!-- end: footer_showteamlink -->
+				<!-- start: footer_contactus -->
+<li><a href="http://forum.dataak.com/contact.php">صفحه‌ی تماس</a></li>
+<!-- end: footer_contactus -->
+				<li><a href="http://forum.dataak.com/">تالار گفتمان دیتاک</a></li>
+				<li><a href="#top">بازگشت به بالا</a></li>
+				<li><a href="http://forum.dataak.com/archive/index.php">بایگانی</a></li>
+				<li><a href="http://forum.dataak.com/misc.php?action=markread">نشانه‌گذاری تمامی انجمن‌ها به عنوان خوانده شده</a></li>
+				<li><a href="http://forum.dataak.com/misc.php?action=syndication">پیوند سایتی RSS</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="lower">
+		<div class="wrapper">
+			<span id="current_time"><strong>زمان کنونی: </strong> 2020/03/11، 06:42 PM </span>			 <!-- Translation By MyBBIran.com -->
+			<span id="copyright">
+
+				<!-- End powered by -->
+			</span>
+		</div>
+	</div>
+</div>
+<!-- The following piece of code allows MyBB to run scheduled tasks. DO NOT REMOVE --><!-- start: task_image -->
+<img src="http://forum.dataak.com/task.php" width="1" height="1" alt="" />
+<!-- end: task_image --><!-- End task image code -->
+
+</div>
+<!-- end: footer -->
+</body>
+</html>
+<!-- end: index -->
