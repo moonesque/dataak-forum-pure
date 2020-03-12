@@ -33,7 +33,7 @@ The following queries answer question #4 on the given task:
 
 * Users with the most posts:
 ```
-select name, count(name) as number_of_posts from posts inner join authors on posts.author_id = authors.id group by name order by number_of_posts desc
+select name, count(name) as number_of_posts from posts inner join authors on posts.author_id = authors.id group by name order by number_of_posts desc;
 ```
 * Number of all posts in the whole forum:
 ```
