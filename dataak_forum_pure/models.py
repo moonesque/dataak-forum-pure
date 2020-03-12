@@ -3,7 +3,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import (
     Integer, SmallInteger, String, Date, DateTime, Float, Boolean, Text, LargeBinary, UnicodeText, MetaData)
 
-
 CONNECTION_STRING = "{drivername}://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
     drivername="mysql",
     user="root",
@@ -13,9 +12,10 @@ CONNECTION_STRING = "{drivername}://{user}:{passwd}@{host}:{port}/{db_name}?char
     db_name="dataak_forum_pure",
 )
 
-
 DeclarativeBase = declarative_base()
 
+
+# database models for the respective tables
 class Forums(DeclarativeBase):
     """
     Database model for Forums table
@@ -24,6 +24,7 @@ class Forums(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     forum_name = Column(Text)
     url = Column(Text)
+
 
 class Threads(DeclarativeBase):
     """
@@ -37,10 +38,12 @@ class Threads(DeclarativeBase):
     thread = Column(Text)
     url = Column(Text)
 
+
 class Authors(DeclarativeBase):
     __tablename__ = 'authors'
     id = Column(Integer, primary_key=True)
     name = Column(Text)
+
 
 class Posts(DeclarativeBase):
     """
@@ -51,5 +54,3 @@ class Posts(DeclarativeBase):
     thread_id = Column(Integer, ForeignKey('threads.id'))
     author_id = Column(Integer, ForeignKey('authors.id'))
     body = Column(Text)
-
-
