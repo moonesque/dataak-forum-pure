@@ -104,4 +104,5 @@ env.bak/
 venv.bak/
 pip-selfcheck.json
 __pycache__
+.idea
 # End of https://www.gitignore.io/api/venv,pycharm
