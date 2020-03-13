@@ -1,16 +1,6 @@
-from sqlalchemy import create_engine, Column, Table, ForeignKey
+from sqlalchemy import Column, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import (
-    Integer, SmallInteger, String, Date, DateTime, Float, Boolean, Text, LargeBinary, UnicodeText, MetaData)
-
-CONNECTION_STRING = "{drivername}://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
-    drivername="mysql",
-    user="root",
-    passwd="oberyn martel",
-    host="localhost",
-    port="3306",
-    db_name="dataak_forum_pure",
-)
+from sqlalchemy import Integer, Text
 
 DeclarativeBase = declarative_base()
 
@@ -40,6 +30,9 @@ class Threads(DeclarativeBase):
 
 
 class Authors(DeclarativeBase):
+    """
+        Database model for Authors table
+        """
     __tablename__ = 'authors'
     id = Column(Integer, primary_key=True)
     name = Column(Text)

@@ -1,98 +1,90 @@
-from requests_html import HTML, HTMLSession
+from requests_html import HTMLSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from .models import Threads, Posts, Forums, Authors, CONNECTION_STRING, DeclarativeBase
+from .models import Threads, Posts, Forums, Authors, DeclarativeBase
+from config import config
 
 
-class PostKey:
-    forum_url = 'http://forum.dataak.com/index.php'
+class Account:
+    def __init__(self):
+        self.session = HTMLSession()
 
-    def get_post_key(self):
+    def _get_post_key(self):
         """
         retrieve unique post key required for login
         """
-        session = HTMLSession()
-        response = session.get(self.forum_url)
-        # with open ('forum_home.html', 'w+') as page:
-        #     page.write(response.text)
-        #     print(response.status_code, 'forum write success.')
-        postkey = response.html.xpath("//input[@name='my_post_key']", first=True).attrs['value']
-        # print('post key:', postkey)
-        return postkey, session
+        response = self.session.get(config.forum_url)
+        post_key = response.html.xpath("//input[@name='my_post_key']", first=True).attrs['value']
+        # print('post key:', post_key)
 
+        return post_key
 
-class Login:
-    login_url = 'http://forum.dataak.com/member.php'
-    index_url = 'http://forum.dataak.com/index.php'
-
-    def do_login(self, postkey, session):
+    def _do_login(self, post_key):
         """
         perform login using post key
         """
         payload = {
             "action": "do_login",
-            "url": "http://forum.dataak.com/index.php",
+            "url": config.forum_url,
             "quick_login": "1",
-            "my_post_key": postkey,
-            "quick_username": "mahan",
-            "quick_password": "@123456",
+            "my_post_key": post_key,
+            "quick_username": config.forum_username,
+            "quick_password": config.forum_password,
             "quick_remember": "yes",
             "submit": "ورود"
         }
 
         headers = {
             "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0",
-            # "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
             "Accept-Encoding": "gzip, deflate",
-            "Host": "forum.dataak.com",
-            # "Content-Length": "218",
-            # "DNT": "1",
-            # "Host": "forum.dataak.com",
-            # "Origin": "http://forum.dataak.com",
-            # "Connection": "keep-alive",
-            # "Referer": "http://forum.dataak.com/member.php",
-            # "Upgrade-Insecure-Requests": "1"
+            "Host": config.host,
         }
 
-        forum = session.post(self.login_url, data=payload, headers=headers)
-        forum = session.get(self.index_url)
+        self.session.post(config.login_url, data=payload, headers=headers)
+        index_page = self.session.get(config.forum_url)
+        return index_page, self.session
 
-        # with open('logged_in.html', 'w+') as page:
-        #     page.write(forum.text)
-        #     print(forum.status_code, 'logged_in write success.')
+    def login(self):
+        post_key = self._get_post_key()
+        index_page, session = self._do_login(post_key)
+        return session
 
-        return forum, session
 
+class Crawler:
 
-class Crawl:
-
-    def __init__(self):
+    def __init__(self, session):
         """
         Initializes database connection and sessionmaker.
         Creates the tables.
         """
+        self.http_session = session
+        print(self.http_session)
         engine = self.db_connect()
         self.create_tables(engine)
         self.db_session = sessionmaker(bind=engine)()
 
-    def db_connect(self):
+    @staticmethod
+    def db_connect():
         """
-            Performs database connection using CONNECTION_STRING from models.py.
+            Performs database connection using CONNECTION_STRING from config.py.
             Returns sqlalchemy engine instance
         """
-        return create_engine(CONNECTION_STRING, echo=False)
+        return create_engine(config.CONNECTION_STRING, echo=False)
 
-    def create_tables(self, engine):
+    @staticmethod
+    def create_tables(engine):
         DeclarativeBase.metadata.create_all(engine)
 
-    def get_forums(self, response, session):
-        forums = [[l.absolute_links.pop(), l.text] for l in response.html.xpath('//td/strong/a')]
+    def get_forums(self, page=None):
+        if page is None:
+            page = self.http_session.get(config.forum_url)
+        forums = [[l.absolute_links.pop(), l.text] for l in page.html.xpath('//td/strong/a')]
         # print(forums)
         return forums
 
-    def get_threads(self, forum, session):
-        response = session.get(forum[0])
+    def get_threads(self, forum):
+        response = self.http_session.get(forum[0])
         threads = [[l.absolute_links.pop(), l.text] for l in response.html.xpath(
             '//span[@class="subject_old" or @class="subject_new" or @class="subject_editable subject_old"]/a')]
 
@@ -104,23 +96,22 @@ class Crawl:
 
         return threads
 
-    def get_posts(self, threads, session):
+    def crawl(self):
+
+        thread_links = self.get_thread_links()
 
         next_page_xapth = '//a[@class="pagination_next"][1]'
-        # thread = '//span[@class="active"]/text()'
         author_xpath = './/div[@class="author_information"]//a/text() | .//div[@class="author_information"]//em/text()'
         body_xpath = './/div[@class="post_body scaleimages"]/text() | .//div[@class="post_body scaleimages"]//*/text()'
         posts_xpath = '//div[@class="post"]'
 
-        while threads:
-            current = threads.pop(0)
-            response = session.get(current[0])
-            pagination = []
-            pagination.append(current[0])
+        while thread_links:
+            current = thread_links.pop(0)
+            pagination = [current[0]]
 
             while pagination:
                 page = pagination.pop(0)
-                response = session.get(page)
+                response = self.http_session.get(page)
                 if response.html.xpath(next_page_xapth):
                     nx_page = response.html.xpath(next_page_xapth)[0].absolute_links.pop()
                     pagination.append(nx_page)
@@ -144,29 +135,31 @@ class Crawl:
                     self.db_session.add(post)
                     self.db_session.commit()
 
-    def get_links(self, init_links, session):
+    def get_forum_links(self):
         """
             BFS traverse of links
         """
-        crawled = []
-        to_crawl = init_links
+        init_links = self.get_forums()
+        visited = []
+        to_visit = init_links
 
-        while to_crawl:
-            current = to_crawl.pop(0)
-            crawled.append(current)
-            response = session.get(current[0])
-            to_crawl = to_crawl + self.get_forums(response, session)
+        while to_visit:
+            current = to_visit.pop(0)
+            visited.append(current)
+            response = self.http_session.get(current[0])
+            to_visit = to_visit + self.get_forums(response)
 
-        # print('crawled links:', crawled)
-        for i in crawled:
+        # print('visited links:', visited)
+        for i in visited:
             forum = Forums(url=i[0], forum_name=i[1])
             self.db_session.add(forum)
             self.db_session.commit()
-        return crawled
+        return visited
 
-    def do_crawl(self, forums, session):
+    def get_thread_links(self):
+        forums = self.get_forum_links()
         threads = []
         for link in forums:
-            threads = threads + self.get_threads(link, session)
+            threads = threads + self.get_threads(link)
         # print(threads)
         return threads
