@@ -159,3 +159,4 @@ class Crawler:
             threads = threads + self.get_threads(link)
 
         return threads
+

@@ -5,7 +5,6 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
     logging.info('Running Crawler...')
-
     try:
         account = Account()
         session = account.login()
