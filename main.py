@@ -1,14 +1,16 @@
 from dataak_forum_pure.crawler import Crawler, Account
+import logging
 
 if __name__ == '__main__':
 
-    print('Running crawler...')
-    account = Account()
-    session = account.login()
-    crawler = Crawler(session)
+    logging.basicConfig(level=logging.INFO)
+    logging.info('Running Crawler...')
+
     try:
+        account = Account()
+        session = account.login()
+        crawler = Crawler(session)
         crawler.crawl()
-        print('Crawl successful.')
+        logging.info('Crawler completed successfully.')
     except Exception as e:
-        print('Crawl failed.')
-        raise e
+        logging.error('Crawler failed due to: %s', e)
