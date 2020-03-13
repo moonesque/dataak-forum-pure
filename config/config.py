@@ -1,3 +1,9 @@
+import logging
+
+
+# logging level
+logging_level = logging.INFO
+
 # Database credentials
 CONNECTION_STRING = "{drivername}://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
     drivername="mysql",
