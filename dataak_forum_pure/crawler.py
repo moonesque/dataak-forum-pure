@@ -34,12 +34,7 @@ class Account:
             "submit": "ورود"
         }
 
-        headers = {
-            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "Accept-Encoding": "gzip, deflate",
-            "Host": config.host,
-        }
+        headers = config.headers
 
         self.session.post(config.login_url, data=payload, headers=headers)
         index_page = self.session.get(config.forum_url)
@@ -59,7 +54,6 @@ class Crawler:
         Creates the tables.
         """
         self.http_session = session
-        print(self.http_session)
         engine = self.db_connect()
         self.create_tables(engine)
         self.db_session = sessionmaker(bind=engine)()
@@ -134,6 +128,9 @@ class Crawler:
                     post = Posts(body=''.join(body), author_id=author_row.id, thread_id=thread.id)
                     self.db_session.add(post)
                     self.db_session.commit()
+
+                    self.http_session.close()
+                    self.db_session.close()
 
     def get_forum_links(self):
         """
