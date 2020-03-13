@@ -11,6 +11,6 @@ if __name__ == '__main__':
         session = account.login()
         crawler = Crawler(session)
         crawler.crawl()
-        logging.info('Crawler completed successfully.')
+        logging.info('Crawler executed successfully.')
     except Exception as e:
         logging.error('Crawler failed due to: %s', e)
