@@ -8,7 +8,7 @@ source venv/bin/actiavte
 ```
 Install the dependencies, using pip:
 ```
-pip install -r requirments.txt
+pip install -r requirements.txt
 ```
 Create a MySQL database:
 ```
