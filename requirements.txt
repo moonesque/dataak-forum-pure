@@ -6,7 +6,7 @@ chardet==3.0.4
 cssselect==1.1.0
 fake-useragent==0.1.11
 idna==2.9
-lxml==4.5.0
+lxml==4.6.3
 mysqlclient==1.4.6
 parse==1.15.0
 pip-autoremove==0.9.1
